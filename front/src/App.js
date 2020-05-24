@@ -6,11 +6,13 @@ import {
 	Link,
 	useParams,
 } from 'react-router-dom'
-import Form from './components/Form'
+import MyForm from './components/MyForm'
 import Forms from './components/Forms'
 import 'antd/dist/antd.css'
+import './App.less'
 
 function App() {
+	// console.log('IN APP')
 	return (
 		<>
 			<Router>
@@ -18,7 +20,7 @@ function App() {
 					<Route exact path="/">
 						<Forms />
 					</Route>
-					<Route path="/submit_form/:id" children={<Form />} />
+					<Route path="/submit_form/:id" children={<MyForm />} />
 				</Switch>
 			</Router>
 		</>
