@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { Map, GoogleApiWrapper } from 'google-maps-react'
 
 import {
@@ -24,11 +24,12 @@ class MyForm extends React.Component {
 			fields: [],
 			title: '',
 			id: 0,
+			redirect: null,
 		}
 
 		this.handleFormCreation = this.handleFormCreation.bind(this)
 		this.getRespectiveComponent = this.getRespectiveComponent.bind(this)
-		// this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
 	handleFormCreation = (data) => {
@@ -58,7 +59,13 @@ class MyForm extends React.Component {
 			})
 	}
 
-	handleSubmit(values) {}
+	handleSubmit(values) {
+		console.log(values)
+		axios.post('http://localhost:8000/api/post_form', values).then(() => {
+			console.log('HEREEE')
+			this.setState({ redirect: '/' })
+		})
+	}
 
 	renderSelectComponent(description) {
 		const { Option } = Select
@@ -203,6 +210,9 @@ class MyForm extends React.Component {
 		if (this.state.error === true) {
 			return <h1>Could not find form with ID {this.state.id}!</h1>
 		}
+
+		if (this.state.redirect) return <Redirect to={this.state.redirect} />
+
 		const { Title } = Typography
 		const { Header, Content } = Layout
 
@@ -224,7 +234,7 @@ class MyForm extends React.Component {
 				<Layout>
 					<Header
 						style={
-							({ overflow: 'hiddeh' },
+							({ overflow: 'hidden' },
 							{ position: 'relative' },
 							{ width: '100%' })
 						}
