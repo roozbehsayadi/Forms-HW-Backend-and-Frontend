@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Typography, Form, Input, Select } from 'antd'
+import { Typography, Form, Input, InputNumber, Select, Space } from 'antd'
 import { Layout } from 'antd'
 
 const axios = require('axios').default
@@ -46,9 +46,48 @@ class MyForm extends React.Component {
 
 	handleSubmit() {}
 
-	getTextComponent(description, index) {
+	renderSelectComponent(description) {
 		const { Option } = Select
+		return (
+			<Select allowClear>
+				{description.options.map((option, optionIndex) => {
+					return (
+						<Option value={option.value} key={optionIndex}>
+							{option.label}
+						</Option>
+					)
+				})}
+			</Select>
+		)
+	}
 
+	getNumberComponent(description, index) {
+		return (
+			<Form.Item
+				name={description.name}
+				label={description.title}
+				key={index}
+				rules={[
+					{
+						required: description.hasOwnProperty('required')
+							? description.required
+							: false,
+						type: 'number',
+						message: 'Age should be a number.',
+					},
+				]}
+				style={{ display: 'inline-block' }}
+			>
+				{description.hasOwnProperty('options') ? (
+					this.renderSelectComponent(description)
+				) : (
+					<InputNumber />
+				)}
+			</Form.Item>
+		)
+	}
+
+	getTextComponent(description, index) {
 		return (
 			<Form.Item
 				name={description.name}
@@ -64,15 +103,7 @@ class MyForm extends React.Component {
 				style={{ display: 'inline-block' }}
 			>
 				{description.hasOwnProperty('options') ? (
-					<Select allowClear>
-						{description.options.map((option, optionIndex) => {
-							return (
-								<Option value={option.value} key={optionIndex}>
-									{option.label}
-								</Option>
-							)
-						})}
-					</Select>
+					this.renderSelectComponent(description)
 				) : (
 					<Input />
 				)}
@@ -83,14 +114,23 @@ class MyForm extends React.Component {
 	getRespectiveComponent(description, index) {
 		if (description.type === 'Text')
 			return this.getTextComponent(description, index)
+		if (description.type === 'Number')
+			return this.getNumberComponent(description, index)
 		else return <h1 key={index}>Temp</h1>
 	}
 
 	render() {
 		const { Title } = Typography
-		const { Header, Footer, Sider, Content } = Layout
+		const { Header, Content } = Layout
 
-		const headerTextStyle = { color: '#333333', marginLeft: '0' }
+		const headerTextStyle = {
+			color: '#333333',
+			marginLeft: '-20px',
+			display: 'inline-block',
+			height: '100%',
+			position: 'absolute',
+			top: '0',
+		}
 
 		const formItems = this.state.fields.map((field, index) => {
 			return this.getRespectiveComponent(field, index)
@@ -99,7 +139,13 @@ class MyForm extends React.Component {
 		return (
 			<>
 				<Layout>
-					<Header>
+					<Header
+						style={
+							({ overflow: 'hiddeh' },
+							{ position: 'relative' },
+							{ width: '100%' })
+						}
+					>
 						<Title style={headerTextStyle}>
 							{this.state.title}
 						</Title>
@@ -109,7 +155,7 @@ class MyForm extends React.Component {
 							name={'form_' + this.state.id}
 							onFinish={this.handleSubmit}
 						>
-							{formItems}
+							<Space direction="vertical">{formItems}</Space>
 						</Form>
 					</Content>
 				</Layout>
