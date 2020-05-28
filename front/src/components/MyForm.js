@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { Map, GoogleApiWrapper } from 'google-maps-react'
 
 import {
 	Typography,
@@ -37,6 +38,7 @@ class MyForm extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log(process.env.REACT_APP_GOOGLE_API_KEY)
 		// console.log('component did mount')
 		const id = this.props.match.params.id
 		axios({
@@ -68,77 +70,115 @@ class MyForm extends React.Component {
 		)
 	}
 
+	getMapComponent(description, index) {
+		return (
+			<>
+				<Form.Item
+					name={description.name}
+					label={description.title}
+					key={index}
+					rules={[
+						{
+							required: description.hasOwnProperty('required')
+								? description.required
+								: false,
+						},
+					]}
+					style={{ display: 'inline-block' }}
+				>
+					<Map
+						google={this.props.google}
+						zoom={14}
+						style={({ width: '100%' }, { height: '80%' })}
+						initialCenter={{ lat: -1.2884, lng: 36.8233 }}
+						key={index}
+					/>
+				</Form.Item>
+				<br />
+			</>
+		)
+	}
+
 	getDateComponent(description, index) {
 		return (
-			<Form.Item
-				name={description.name}
-				label={description.title}
-				key={index}
-				rules={[
-					{
-						required: description.hasOwnProperty('required')
-							? description.required
-							: false,
-					},
-				]}
-				style={{ display: 'inline-block' }}
-			>
-				{description.hasOwnProperty('options') ? (
-					this.renderSelectComponent(description)
-				) : (
-					<DatePicker />
-				)}
-			</Form.Item>
+			<>
+				<Form.Item
+					name={description.name}
+					label={description.title}
+					key={index}
+					rules={[
+						{
+							required: description.hasOwnProperty('required')
+								? description.required
+								: false,
+						},
+					]}
+					style={{ display: 'inline-block' }}
+				>
+					{description.hasOwnProperty('options') ? (
+						this.renderSelectComponent(description)
+					) : (
+						<DatePicker />
+					)}
+				</Form.Item>
+				<br />
+			</>
 		)
 	}
 
 	getNumberComponent(description, index) {
 		return (
-			<Form.Item
-				name={description.name}
-				label={description.title}
-				key={index}
-				rules={[
-					{
-						required: description.hasOwnProperty('required')
-							? description.required
-							: false,
-						type: 'number',
-						message: 'Age should be a number.',
-					},
-				]}
-				style={{ display: 'inline-block' }}
-			>
-				{description.hasOwnProperty('options') ? (
-					this.renderSelectComponent(description)
-				) : (
-					<InputNumber />
-				)}
-			</Form.Item>
+			<>
+				<Form.Item
+					name={description.name}
+					label={description.title}
+					key={index}
+					rules={[
+						{
+							required: description.hasOwnProperty('required')
+								? description.required
+								: false,
+							type: 'number',
+							message: 'Age should be a number.',
+						},
+					]}
+					style={{ display: 'inline-block' }}
+				>
+					{description.hasOwnProperty('options') ? (
+						this.renderSelectComponent(description)
+					) : (
+						<InputNumber />
+					)}
+				</Form.Item>
+				<br />
+			</>
 		)
 	}
 
 	getTextComponent(description, index) {
 		return (
-			<Form.Item
-				name={description.name}
-				label={description.title}
-				key={index}
-				rules={[
-					{
-						required: description.hasOwnProperty('required')
-							? description.required
-							: false,
-					},
-				]}
-				style={{ display: 'inline-block' }}
-			>
-				{description.hasOwnProperty('options') ? (
-					this.renderSelectComponent(description)
-				) : (
-					<Input />
-				)}
-			</Form.Item>
+			<>
+				<Form.Item
+					name={description.name}
+					label={description.title}
+					key={index}
+					rules={[
+						{
+							required: description.hasOwnProperty('required')
+								? description.required
+								: false,
+						},
+					]}
+					style={{ display: 'inline-block' }}
+				>
+					{description.hasOwnProperty('options') ? (
+						this.renderSelectComponent(description)
+					) : (
+						<Input />
+					)}
+				</Form.Item>
+				<br />
+			</>
 		)
 	}
 
@@ -149,6 +189,8 @@ class MyForm extends React.Component {
 			return this.getNumberComponent(description, index)
 		if (description.type === 'Date')
 			return this.getDateComponent(description, index)
+		if (description.type === 'Location')
+			return this.getMapComponent(description, index)
 		else return <h1 key={index}>Temp</h1>
 	}
 
@@ -183,12 +225,19 @@ class MyForm extends React.Component {
 							{this.state.title}
 						</Title>
 					</Header>
-					<Content style={{ textAlign: 'left', marginLeft: '7%' }}>
+					<Content
+						style={{
+							textAlign: 'left',
+							marginLeft: '7%',
+							width: '100%',
+						}}
+					>
 						<Form
 							name={'form_' + this.state.id}
 							onFinish={this.handleSubmit}
 						>
 							<Space direction="vertical">{formItems}</Space>
+							{/* {formItems} */}
 						</Form>
 					</Content>
 				</Layout>
@@ -197,4 +246,6 @@ class MyForm extends React.Component {
 	}
 }
 
-export default withRouter(MyForm)
+export default withRouter(
+	GoogleApiWrapper({ apiKey: process.env.REACT_APP_GOOGLE_API_KEY })(MyForm)
+)

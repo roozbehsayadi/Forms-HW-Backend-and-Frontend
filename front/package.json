@@ -10,6 +10,7 @@
 		"antd": "^4.2.4",
 		"axios": "^0.19.2",
 		"craco-less": "^1.16.0",
+		"google-maps-react": "^2.0.6",
 		"less": "^3.11.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
