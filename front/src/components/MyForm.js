@@ -10,6 +10,7 @@ import {
 	Select,
 	Space,
 	DatePicker,
+	Button,
 } from 'antd'
 import { Layout } from 'antd'
 
@@ -19,6 +20,7 @@ class MyForm extends React.Component {
 	constructor() {
 		super()
 		this.state = {
+			error: undefined,
 			fields: [],
 			title: '',
 			id: 0,
@@ -31,6 +33,7 @@ class MyForm extends React.Component {
 
 	handleFormCreation = (data) => {
 		this.setState({
+			error: false,
 			fields: data.fields,
 			title: data.title,
 			id: data.id,
@@ -38,8 +41,6 @@ class MyForm extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log(process.env.REACT_APP_GOOGLE_API_KEY)
-		// console.log('component did mount')
 		const id = this.props.match.params.id
 		axios({
 			method: 'get',
@@ -48,12 +49,16 @@ class MyForm extends React.Component {
 			.then((response) => {
 				this.handleFormCreation(response.data)
 			})
-			.catch(function (error) {
-				console.error(error)
+			.catch((error) => {
+				this.setState({
+					error: true,
+					id: id,
+				})
+				// console.error(error)
 			})
 	}
 
-	handleSubmit() {}
+	handleSubmit(values) {}
 
 	renderSelectComponent(description) {
 		const { Option } = Select
@@ -195,6 +200,9 @@ class MyForm extends React.Component {
 	}
 
 	render() {
+		if (this.state.error === true) {
+			return <h1>Could not find form with ID {this.state.id}!</h1>
+		}
 		const { Title } = Typography
 		const { Header, Content } = Layout
 
@@ -236,7 +244,12 @@ class MyForm extends React.Component {
 							name={'form_' + this.state.id}
 							onFinish={this.handleSubmit}
 						>
-							<Space direction="vertical">{formItems}</Space>
+							<Space direction="vertical">
+								{formItems}{' '}
+								<Button type="primary" htmlType="submit">
+									Submit
+								</Button>
+							</Space>
 							{/* {formItems} */}
 						</Form>
 					</Content>
