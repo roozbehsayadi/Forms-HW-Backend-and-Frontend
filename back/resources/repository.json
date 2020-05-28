@@ -16,6 +16,12 @@
 				"required": false
 			},
 			{
+				"name": "Date",
+				"title": "Date",
+				"type": "Date",
+				"required": true
+			},
+			{
 				"name": "Loc",
 				"title": "Your Location",
 				"type": "Location",

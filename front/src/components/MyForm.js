@@ -1,7 +1,15 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Typography, Form, Input, InputNumber, Select, Space } from 'antd'
+import {
+	Typography,
+	Form,
+	Input,
+	InputNumber,
+	Select,
+	Space,
+	DatePicker,
+} from 'antd'
 import { Layout } from 'antd'
 
 const axios = require('axios').default
@@ -13,7 +21,6 @@ class MyForm extends React.Component {
 			fields: [],
 			title: '',
 			id: 0,
-			componentCounter: 0,
 		}
 
 		this.handleFormCreation = this.handleFormCreation.bind(this)
@@ -58,6 +65,30 @@ class MyForm extends React.Component {
 					)
 				})}
 			</Select>
+		)
+	}
+
+	getDateComponent(description, index) {
+		return (
+			<Form.Item
+				name={description.name}
+				label={description.title}
+				key={index}
+				rules={[
+					{
+						required: description.hasOwnProperty('required')
+							? description.required
+							: false,
+					},
+				]}
+				style={{ display: 'inline-block' }}
+			>
+				{description.hasOwnProperty('options') ? (
+					this.renderSelectComponent(description)
+				) : (
+					<DatePicker />
+				)}
+			</Form.Item>
 		)
 	}
 
@@ -116,6 +147,8 @@ class MyForm extends React.Component {
 			return this.getTextComponent(description, index)
 		if (description.type === 'Number')
 			return this.getNumberComponent(description, index)
+		if (description.type === 'Date')
+			return this.getDateComponent(description, index)
 		else return <h1 key={index}>Temp</h1>
 	}
 
