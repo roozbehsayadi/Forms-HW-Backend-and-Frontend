@@ -12,7 +12,7 @@ import App from "../App";
 
 const axios = require('axios')
 
-export default class Forms extends React.Component {
+class Forms extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,6 +39,10 @@ export default class Forms extends React.Component {
             .catch(function (error) {
                 console.error(error)
             })
+    }
+
+    nextPath(path){
+        this.props.history.push(path);
     }
 
     render() {
@@ -110,7 +114,7 @@ export default class Forms extends React.Component {
                             onRow={(record, index) => ({
                                 onClick: () => {
                                     console.log('clicked on id ' + record.id);
-                                    // TODO: do routing
+                                    this.nextPath('/submit_form/' + record.id + '/');
                                 }
                             })}
                         />
@@ -120,3 +124,5 @@ export default class Forms extends React.Component {
         )
     }
 }
+
+export default withRouter(Forms);

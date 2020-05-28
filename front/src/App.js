@@ -17,9 +17,7 @@ function App() {
 		<>
 			<Router>
 				<Switch>
-					<Route exact path="/">
-						<Forms />
-					</Route>
+					<Route exact path="/" children={<Forms />} />
 					<Route path="/submit_form/:id" children={<MyForm />} />
 				</Switch>
 			</Router>
