@@ -58,7 +58,10 @@ class MyForm extends React.Component {
 			})
 	}
 
-	handleSubmit(values) {}
+	handleSubmit(values) {
+		console.log(values)
+		axios.post('http://localhost:8000/api/post_form', values)
+	}
 
 	renderSelectComponent(description) {
 		const { Option } = Select
@@ -224,7 +227,7 @@ class MyForm extends React.Component {
 				<Layout>
 					<Header
 						style={
-							({ overflow: 'hiddeh' },
+							({ overflow: 'hidden' },
 							{ position: 'relative' },
 							{ width: '100%' })
 						}

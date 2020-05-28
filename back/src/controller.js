@@ -18,4 +18,9 @@ router.get('/forms', (req, res) => {
 	res.status(200).send(repository.formsData)
 })
 
+router.post('/post_form', (req, res) => {
+	console.log('Got a form!')
+	console.log(req.body)
+})
+
 module.exports = router
