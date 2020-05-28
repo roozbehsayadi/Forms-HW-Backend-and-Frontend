@@ -21,6 +21,7 @@ router.get('/forms', (req, res) => {
 router.post('/post_form', (req, res) => {
 	console.log('Got a form!')
 	console.log(req.body)
+	res.status(200).send('Form retrieved successfully')
 })
 
 module.exports = router
