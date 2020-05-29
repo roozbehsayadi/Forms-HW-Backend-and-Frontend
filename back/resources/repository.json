@@ -27,7 +27,12 @@
 				"type": "Location",
 				"required": false
 			},
-
+			{
+				"name": "Loc2",
+				"title": "The Other Location",
+				"type": "Location",
+				"required": false
+			},
 			{
 				"name": "Request_Type",
 				"title": "Request Type",
