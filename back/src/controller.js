@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const repository = require('./repository')
+let repository = require('./repository')
 
 router.get('/forms/:id', (req, res) => {
 	// console.log(req.params)
@@ -22,6 +22,15 @@ router.post('/post_form', (req, res) => {
 	console.log('Got a form!')
 	console.log(req.body)
 	res.status(200).send('Form retrieved successfully')
+})
+
+router.post('/admin/add', (req, res) => {
+    console.log('Got a new form!');
+    // console.log(req.body);
+    repository.add_data(req.body);
+    res.status(200).send('new form added.');
+    console.log('new form added.');
+    console.log(repository.formsData);
 })
 
 module.exports = router
