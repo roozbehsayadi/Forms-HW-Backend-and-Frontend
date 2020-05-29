@@ -35,7 +35,6 @@ router.post('/admin/add', (req, res) => {
     repository.add_data(req.body);
     res.status(200).send('new form added.');
     console.log('new form added.');
-    console.log(repository.formsData);
 })
 
 module.exports = router
