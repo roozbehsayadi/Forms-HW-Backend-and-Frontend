@@ -26,7 +26,7 @@ class MyForm extends React.Component {
 			title: '',
 			id: 0,
 			redirect: null,
-			marker: {},
+			marker: [],
 		}
 
 		this.handleFormCreation = this.handleFormCreation.bind(this)
@@ -97,15 +97,19 @@ class MyForm extends React.Component {
         const { latLng } = coord;
         const lat = latLng.lat();
         const lng = latLng.lng();
-
+		this.state.marker[t.id] = {lat, lng};
+		let markers = this.state.marker;
+		markers[t.id] = {position: {lat, lng}};
         this.setState({
-            marker: {
-                position: {lat, lng}
-            }
-        })
+            marker: markers
+        });
     }
 
 	getMapComponent(description, index) {
+		let markerIndex = 'form_' + this.state.id + '_' +  description.name;
+		let markerPos = this.state.marker[markerIndex];
+		if (typeof markerPos === 'undefined')
+			markerPos = []
 		return (
 			<>
 				<Form.Item
@@ -143,7 +147,7 @@ class MyForm extends React.Component {
 						>
                             <Marker
                                 key={index}
-                                position={this.state.marker.position}
+                                position={markerPos.position}
                             />
 						</Map>
 					)}
