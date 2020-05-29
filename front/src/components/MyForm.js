@@ -105,7 +105,13 @@ class MyForm extends React.Component {
 								: false,
 						},
 					]}
-					style={{ display: 'inline-block' }}
+
+					style={{
+						display: 'inline-block',
+                        width: description.hasOwnProperty('options') ? '100px':'400px',
+						height: description.hasOwnProperty('options') ? '100px':'400px',
+						marginBottom: description.hasOwnProperty('options') ? '0%':'50px'
+					}}
 				>
 					{description.hasOwnProperty('options') ? (
 						this.renderSelectComponent(description)
@@ -113,7 +119,10 @@ class MyForm extends React.Component {
 						<Map
 							google={this.props.google}
 							zoom={14}
-							style={({ width: '100%' }, { height: '80%' })}
+							containerStyle={{
+                                width: '400px',
+                                height: '400px',
+							}}
 							initialCenter={{ lat: -1.2884, lng: 36.8233 }}
 							key={index}
 						/>
@@ -260,7 +269,7 @@ class MyForm extends React.Component {
 						style={{
 							textAlign: 'left',
 							marginLeft: '7%',
-							width: '100%',
+							width: '86%',
 						}}
 					>
 						<Form
