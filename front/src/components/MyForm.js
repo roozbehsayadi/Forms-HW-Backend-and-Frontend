@@ -64,6 +64,10 @@ class MyForm extends React.Component {
 	}
 
 	handleSubmit(values) {
+		for(let key in this.state.marker){
+			let fieldName = key.replace('form_' + this.state.id + '_', '');
+			values[fieldName] = this.state.marker[key].position;
+		}
 		console.log(values)
 		axios.post('http://localhost:8000/api/post_form', values).then(() => {
 			console.log('HEREEE')
