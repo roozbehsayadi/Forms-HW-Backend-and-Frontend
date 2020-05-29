@@ -22,9 +22,6 @@ class MyForm extends React.Component {
 	constructor() {
 		super()
 		this.state = {
-			// hasLocationAccess: false,
-			// userLocationLat: 0,
-			// userLocationLong: 0,
 			error: undefined,
 			fields: [],
 			title: '',
@@ -64,24 +61,6 @@ class MyForm extends React.Component {
 					id: id,
 				})
 			})
-		// if ('geolocation' in navigator) {
-		// 	this.setState({
-		// 		hasLocationAccess: true,
-		// 	})
-		// }
-		// let userLatitude, userLongtitude
-		// console.log(navigator.geolocation.getCurrentPosition(() => {}))
-		// console.log('HEY!')
-		// navigator.geolocation.getCurrentPosition(function (position) {
-		// 	console.log('HERE!')
-		// 	console.log(position)
-		// userLatitude = position.coords.latitude
-		// userLongtitude = position.coords.longtitude
-		// })
-		// this.setState({
-		// 	userLocationLat: userLatitude,
-		// 	userLocationLong: userLongtitude,
-		// })
 	}
 
 	handleSubmit(values) {
@@ -145,13 +124,6 @@ class MyForm extends React.Component {
 					name={description.name}
 					label={description.title}
 					key={index}
-					rules={[
-						{
-							required: description.hasOwnProperty('required')
-								? description.required
-								: false,
-						},
-					]}
 					style={{
 						display: 'inline-block',
 						width: description.hasOwnProperty('options')
@@ -315,8 +287,6 @@ class MyForm extends React.Component {
 
 		return (
 			<>
-				{/* <h1>{this.state.userLocationLat}</h1>
-				<h1>{this.state.userLocationLong}</h1> */}
 				<Layout>
 					<Header
 						style={
