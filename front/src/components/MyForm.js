@@ -79,8 +79,11 @@ class MyForm extends React.Component {
 			<Select allowClear>
 				{description.options.map((option, optionIndex) => {
 					return (
-						<Option value={option.value} key={optionIndex}>
-							{option.label}
+						<Option
+							value={JSON.stringify(option.value)}
+							key={optionIndex}
+						>
+							{JSON.stringify(option.label)}
 						</Option>
 					)
 				})}
@@ -104,13 +107,17 @@ class MyForm extends React.Component {
 					]}
 					style={{ display: 'inline-block' }}
 				>
-					<Map
-						google={this.props.google}
-						zoom={14}
-						style={({ width: '100%' }, { height: '80%' })}
-						initialCenter={{ lat: -1.2884, lng: 36.8233 }}
-						key={index}
-					/>
+					{description.hasOwnProperty('options') ? (
+						this.renderSelectComponent(description)
+					) : (
+						<Map
+							google={this.props.google}
+							zoom={14}
+							style={({ width: '100%' }, { height: '80%' })}
+							initialCenter={{ lat: -1.2884, lng: 36.8233 }}
+							key={index}
+						/>
+					)}
 				</Form.Item>
 				<br />
 			</>
