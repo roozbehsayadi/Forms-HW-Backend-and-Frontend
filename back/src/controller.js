@@ -4,13 +4,18 @@ let repository = require('./repository')
 
 router.get('/forms/:id', (req, res) => {
 	// console.log(req.params)
+	let flag = false
 	for (let i = 0; i < repository.formsData.length; i++) {
-		if (repository.formsData[i].id == req.params['id'])
+		if (repository.formsData[i].id == req.params['id']) {
 			res.status(200).send(repository.formsData[i])
+			flag = true
+		}
 	}
-	res.status(404).send({
-		message: 'Form with id ' + req.params['id'] + ' not found.',
-	})
+	if (flag === false) {
+		res.status(404).send({
+			message: 'Form with id ' + req.params['id'] + ' not found.',
+		})
+	}
 })
 
 router.get('/forms', (req, res) => {
