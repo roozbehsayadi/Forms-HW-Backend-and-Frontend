@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Map, GoogleApiWrapper } from 'google-maps-react'
+import { HomeOutlined } from '@ant-design/icons'
 
 import {
 	Typography,
@@ -30,6 +31,7 @@ class MyForm extends React.Component {
 		this.handleFormCreation = this.handleFormCreation.bind(this)
 		this.getRespectiveComponent = this.getRespectiveComponent.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.redirectToHome = this.redirectToHome.bind(this)
 	}
 
 	handleFormCreation = (data) => {
@@ -65,6 +67,10 @@ class MyForm extends React.Component {
 			console.log('HEREEE')
 			this.setState({ redirect: '/' })
 		})
+	}
+
+	redirectToHome() {
+		this.setState({ redirect: '/' })
 	}
 
 	renderSelectComponent(description) {
@@ -254,7 +260,17 @@ class MyForm extends React.Component {
 							name={'form_' + this.state.id}
 							onFinish={this.handleSubmit}
 						>
-							<Space direction="vertical">
+							<Space
+								direction="vertical"
+								style={{ marginTop: '2%' }}
+							>
+								<Button
+									type="default"
+									onClick={this.redirectToHome}
+									icon={<HomeOutlined />}
+								>
+									Go back home
+								</Button>
 								{formItems}{' '}
 								<Button type="primary" htmlType="submit">
 									Submit
