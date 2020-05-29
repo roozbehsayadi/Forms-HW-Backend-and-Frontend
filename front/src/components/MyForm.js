@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter, Redirect } from 'react-router-dom'
-import { Map, GoogleApiWrapper } from 'google-maps-react'
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 import { HomeOutlined } from '@ant-design/icons'
 
 import {
@@ -26,12 +26,14 @@ class MyForm extends React.Component {
 			title: '',
 			id: 0,
 			redirect: null,
+			marker: {},
 		}
 
 		this.handleFormCreation = this.handleFormCreation.bind(this)
 		this.getRespectiveComponent = this.getRespectiveComponent.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.redirectToHome = this.redirectToHome.bind(this)
+        this.mapOnClick = this.mapOnClick.bind(this)
 	}
 
 	handleFormCreation = (data) => {
@@ -91,6 +93,18 @@ class MyForm extends React.Component {
 		)
 	}
 
+    mapOnClick(t, map, coord){
+        const { latLng } = coord;
+        const lat = latLng.lat();
+        const lng = latLng.lng();
+
+        this.setState({
+            marker: {
+                position: {lat, lng}
+            }
+        })
+    }
+
 	getMapComponent(description, index) {
 		return (
 			<>
@@ -108,7 +122,7 @@ class MyForm extends React.Component {
 
 					style={{
 						display: 'inline-block',
-                        width: description.hasOwnProperty('options') ? '100px':'400px',
+                        width: description.hasOwnProperty('options') ? '100px':'300px',
 						height: description.hasOwnProperty('options') ? '100px':'400px',
 						marginBottom: description.hasOwnProperty('options') ? '0%':'50px'
 					}}
@@ -120,12 +134,18 @@ class MyForm extends React.Component {
 							google={this.props.google}
 							zoom={14}
 							containerStyle={{
-                                width: '400px',
+                                width: '300px',
                                 height: '400px',
 							}}
 							initialCenter={{ lat: -1.2884, lng: 36.8233 }}
 							key={index}
-						/>
+							onClick={this.mapOnClick}
+						>
+                            <Marker
+                                key={index}
+                                position={this.state.marker.position}
+                            />
+						</Map>
 					)}
 				</Form.Item>
 				<br />
