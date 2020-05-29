@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 import { HomeOutlined } from '@ant-design/icons'
+import { geolocated } from 'react-geolocated'
 
 import {
 	Typography,
@@ -21,6 +22,9 @@ class MyForm extends React.Component {
 	constructor() {
 		super()
 		this.state = {
+			// hasLocationAccess: false,
+			// userLocationLat: 0,
+			// userLocationLong: 0,
 			error: undefined,
 			fields: [],
 			title: '',
@@ -33,7 +37,7 @@ class MyForm extends React.Component {
 		this.getRespectiveComponent = this.getRespectiveComponent.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.redirectToHome = this.redirectToHome.bind(this)
-        this.mapOnClick = this.mapOnClick.bind(this)
+		this.mapOnClick = this.mapOnClick.bind(this)
 	}
 
 	handleFormCreation = (data) => {
@@ -59,14 +63,31 @@ class MyForm extends React.Component {
 					error: true,
 					id: id,
 				})
-				// console.error(error)
 			})
+		// if ('geolocation' in navigator) {
+		// 	this.setState({
+		// 		hasLocationAccess: true,
+		// 	})
+		// }
+		// let userLatitude, userLongtitude
+		// console.log(navigator.geolocation.getCurrentPosition(() => {}))
+		// console.log('HEY!')
+		// navigator.geolocation.getCurrentPosition(function (position) {
+		// 	console.log('HERE!')
+		// 	console.log(position)
+		// userLatitude = position.coords.latitude
+		// userLongtitude = position.coords.longtitude
+		// })
+		// this.setState({
+		// 	userLocationLat: userLatitude,
+		// 	userLocationLong: userLongtitude,
+		// })
 	}
 
 	handleSubmit(values) {
-		for(let key in this.state.marker){
-			let fieldName = key.replace('form_' + this.state.id + '_', '');
-			values[fieldName] = this.state.marker[key].position;
+		for (let key in this.state.marker) {
+			let fieldName = key.replace('form_' + this.state.id + '_', '')
+			values[fieldName] = this.state.marker[key].position
 		}
 		console.log(values)
 		axios.post('http://localhost:8000/api/post_form', values).then(() => {
@@ -97,23 +118,27 @@ class MyForm extends React.Component {
 		)
 	}
 
-    mapOnClick(t, map, coord){
-        const { latLng } = coord;
-        const lat = latLng.lat();
-        const lng = latLng.lng();
-		this.state.marker[t.id] = {lat, lng};
-		let markers = this.state.marker;
-		markers[t.id] = {position: {lat, lng}};
-        this.setState({
-            marker: markers
-        });
-    }
+	mapOnClick(t, map, coord) {
+		const { latLng } = coord
+		const lat = latLng.lat()
+		const lng = latLng.lng()
+		// this.state.marker[t.id] = { lat, lng }
+		let markerTemp = this.state.marker
+		markerTemp[t.id] = { lat, lng }
+		this.setState({
+			marker: markerTemp,
+		})
+		let markers = this.state.marker
+		markers[t.id] = { position: { lat, lng } }
+		this.setState({
+			marker: markers,
+		})
+	}
 
 	getMapComponent(description, index) {
-		let markerIndex = 'form_' + this.state.id + '_' +  description.name;
-		let markerPos = this.state.marker[markerIndex];
-		if (typeof markerPos === 'undefined')
-			markerPos = []
+		let markerIndex = 'form_' + this.state.id + '_' + description.name
+		let markerPos = this.state.marker[markerIndex]
+		if (typeof markerPos === 'undefined') markerPos = []
 		return (
 			<>
 				<Form.Item
@@ -127,12 +152,17 @@ class MyForm extends React.Component {
 								: false,
 						},
 					]}
-
 					style={{
 						display: 'inline-block',
-                        width: description.hasOwnProperty('options') ? '100px':'300px',
-						height: description.hasOwnProperty('options') ? '100px':'400px',
-						marginBottom: description.hasOwnProperty('options') ? '0%':'50px'
+						width: description.hasOwnProperty('options')
+							? '100px'
+							: '300px',
+						height: description.hasOwnProperty('options')
+							? '100px'
+							: '400px',
+						marginBottom: description.hasOwnProperty('options')
+							? '0%'
+							: '50px',
 					}}
 				>
 					{description.hasOwnProperty('options') ? (
@@ -142,17 +172,21 @@ class MyForm extends React.Component {
 							google={this.props.google}
 							zoom={14}
 							containerStyle={{
-                                width: '300px',
-                                height: '400px',
+								width: '300px',
+								height: '400px',
 							}}
-							initialCenter={{ lat: -1.2884, lng: 36.8233 }}
+							initialCenter={{
+								lat: this.props.coords
+									? this.props.coords.latitude
+									: -1.2884,
+								lng: this.props.coords
+									? this.props.coords.longtitude
+									: 36.8233,
+							}}
 							key={index}
 							onClick={this.mapOnClick}
 						>
-                            <Marker
-                                key={index}
-                                position={markerPos.position}
-                            />
+							<Marker key={index} position={markerPos.position} />
 						</Map>
 					)}
 				</Form.Item>
@@ -281,6 +315,8 @@ class MyForm extends React.Component {
 
 		return (
 			<>
+				{/* <h1>{this.state.userLocationLat}</h1>
+				<h1>{this.state.userLocationLong}</h1> */}
 				<Layout>
 					<Header
 						style={
@@ -330,5 +366,14 @@ class MyForm extends React.Component {
 }
 
 export default withRouter(
-	GoogleApiWrapper({ apiKey: process.env.REACT_APP_GOOGLE_API_KEY })(MyForm)
+	geolocated({
+		positionOptions: {
+			enableHighAccuracy: false,
+		},
+		userDecisionTimeout: 5000,
+	})(
+		GoogleApiWrapper({
+			apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+		})(MyForm)
+	)
 )

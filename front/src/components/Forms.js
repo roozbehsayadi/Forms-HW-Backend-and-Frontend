@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom'
 import { Typography, Table } from 'antd'
 
 import { Layout } from 'antd'
-import App from '../App'
 
 const axios = require('axios')
 
