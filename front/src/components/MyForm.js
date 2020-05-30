@@ -13,6 +13,7 @@ import {
 	Space,
 	DatePicker,
 	Button,
+	Divider,
 } from 'antd'
 import { Layout } from 'antd'
 
@@ -28,6 +29,7 @@ class MyForm extends React.Component {
 			id: 0,
 			redirect: null,
 			marker: [],
+			direction: 'ltr',
 		}
 
 		this.handleFormCreation = this.handleFormCreation.bind(this)
@@ -321,7 +323,10 @@ class MyForm extends React.Component {
 								>
 									Go back home
 								</Button>
-								{formItems}{' '}
+								<Divider />
+								<div style={{ marginTop: '2%' }}>
+									{formItems}{' '}
+								</div>
 								<Button type="primary" htmlType="submit">
 									Submit
 								</Button>
