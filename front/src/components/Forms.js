@@ -57,13 +57,22 @@ class Forms extends React.Component {
 		const { Title } = Typography
 		const { Header, Content, Footer } = Layout
 
-		const headerTextStyle = {
+		let headerTextStyle = {
 			color: '#333333',
 			marginLeft: '-20px',
 			display: 'inline-block',
 			height: '100%',
-			position: 'absolute',
 			top: '10px',
+			position: 'absolute',
+			right: null,
+			left: null,
+		}
+		if (this.state.language === 'FA') {
+			headerTextStyle.right = '2%'
+			headerTextStyle.left = null
+		} else {
+			headerTextStyle.left = '2%'
+			headerTextStyle.right = null
 		}
 
 		const forms = this.state.forms.map((form, index) => {
@@ -117,10 +126,10 @@ class Forms extends React.Component {
 
 		return (
 			<>
-				<ConfigProvider
-					direction={this.state.language === 'EN' ? 'ltr' : 'rtl'}
-				>
-					<Layout>
+				<Layout>
+					<ConfigProvider
+						direction={this.state.language === 'EN' ? 'ltr' : 'rtl'}
+					>
 						<Header
 							style={{
 								overflow: 'hidden',
@@ -134,7 +143,10 @@ class Forms extends React.Component {
 									: this.state.title_fa}
 							</Title>
 						</Header>
-
+					</ConfigProvider>
+					<ConfigProvider
+						direction={this.state.language === 'EN' ? 'ltr' : 'rtl'}
+					>
 						<Content
 							style={{
 								textAlign: 'left',
@@ -158,16 +170,17 @@ class Forms extends React.Component {
 								})}
 							/>
 						</Content>
-						<Footer>
-							<Switch
-								checkedChildren="فارسی"
-								unCheckedChildren="English"
-								onChange={this.handleLanguageSwitch}
-								size="default"
-							/>
-						</Footer>
-					</Layout>
-				</ConfigProvider>
+					</ConfigProvider>
+					<Footer style={{ position: 'relative' }}>
+						<Switch
+							checkedChildren="فارسی"
+							unCheckedChildren="English"
+							onChange={this.handleLanguageSwitch}
+							size="default"
+							style={{ left: '2%' }}
+						/>
+					</Footer>
+				</Layout>
 			</>
 		)
 	}
