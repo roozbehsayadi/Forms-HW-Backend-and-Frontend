@@ -33,7 +33,7 @@ class Forms extends React.Component {
 	componentDidMount() {
 		axios({
 			method: 'get',
-			url: 'http://localhost:8000/api/forms/',
+			url: '/api/forms/',
 		})
 			.then((response) => {
 				this.handleTableCreation(response.data)

@@ -52,7 +52,7 @@ class MyForm extends React.Component {
 		const id = this.props.match.params.id
 		axios({
 			method: 'get',
-			url: 'http://localhost:8000/api/forms/' + id,
+			url: '/api/forms/' + id,
 		})
 			.then((response) => {
 				this.handleFormCreation(response.data)
@@ -71,7 +71,7 @@ class MyForm extends React.Component {
 			values[fieldName] = this.state.marker[key].position
 		}
 		console.log(values)
-		axios.post('http://localhost:8000/api/post_form', values).then(() => {
+		axios.post('/api/post_form', values).then(() => {
 			console.log('HEREEE')
 			this.setState({ redirect: '/' })
 		})
