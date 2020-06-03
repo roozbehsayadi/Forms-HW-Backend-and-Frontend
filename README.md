@@ -2,6 +2,10 @@
 
 This is a simple program we wrote for our Internet Engineering course at Shahid Beheshti University. The general idea is, users can open the application and see a list of forms. They can choose a form from that list, and fill it with their information. Then their information will be sent to the back-end to be processed. Also, there's an admin who can add forms by sending some requests to the back-end. I will explain types of requests and front-end abilities in more detail at the rest of the README.
 
+## See the Result
+
+You can check the project out with [This Link](https://damp-brook-52073.herokuapp.com/).
+
 ## Running on Your System
 
 You have to install Node.js on your system. You can check if you already have it by typing this command:
@@ -18,7 +22,7 @@ You'll also the Yarn package. You can check if you already have it on your syste
 yarn --version
 ```
 
-I you don't have it, follow the instructions from [Yarn's official website](https://classic.yarnpkg.com/en/docs/install/#debian-stable).
+If you don't have it, follow the instructions from [Yarn's official website](https://classic.yarnpkg.com/en/docs/install/#debian-stable).
 
 Once you setup these packages, clone this project from the repository. On the project's root, you'll see two folders: _front_ and _back_. Open the terminal on the root folder. Then go to each folder and install its dependencies. You can install the back-end's dependencies by typing `npm install`. The front-end's dependencies can be installed using `yarn install`.
 
