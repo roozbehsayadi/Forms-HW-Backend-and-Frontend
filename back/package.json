@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js",
-    "heroku-postbuild": "cd ../front && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "start": "node src/app.js"
   },
   "author": "Roozbeh Sayadi",
   "license": "ISC",
